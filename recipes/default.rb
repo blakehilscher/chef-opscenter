@@ -1,18 +1,13 @@
-# add repository
 apt_repository "datastax" do
   uri          "http://debian.datastax.com/community"
   distribution "stable"
   components   ["main"]
   key          "http://debian.datastax.com/debian/repo_key"
-
   action :add
 end
 
-# DataStax Server Community Edition package will not install w/o this
-# one installed. MK.
-package "python-cql" do
+package "libssl0.9.8" do
   action :install
-  options("--force-yes")
 end
 
 package "opscenter-free" do
@@ -35,7 +30,7 @@ template "#{node.opscenter.root}/.passwd" do
   source "passwd.erb"
 end
 
-service "opscenter" do
-  supports :restart => true, :status => true
-  action [:enable, :start]
+
+service "opscenterd" do
+  action :restart
 end
